@@ -1,4 +1,3 @@
-const { Double } = require('bson')
 const {Schema, model} = require('mongoose')
 
 const Order = new Schema({

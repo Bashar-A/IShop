@@ -2,26 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const graphqlMiddleware = require('express-graphql')
 const keys = require('./keys')
+const { mergeSchemas } = require('@graphql-tools/merge');
+let Schemas = []
 
-const { buildSchema } = require('graphql');
-
-let schema = buildSchema(`
-  type Query {
-    postTitle: String,
-    blogTitle: String
-  }
-`);
-
-let root = {
-    postTitle: () => {
-      return 'Build a Simple GraphQL Server With Express and NodeJS';
-    },
-    blogTitle: () => {
-      return 'scotch.io';
-    }
-  };
-
-const MODULES = ['auth', 'users', 'posts', 'comments'];
+const MODULES = ['attributes', 'categories'];
 
 module.exports = function createApp(){
     const app = express();
@@ -34,25 +18,30 @@ module.exports = function createApp(){
     app.use(express.urlencoded({extended: true}))
     app.use(express.json());
 
+    MODULES.forEach((moduleName) => {
+        try{
+        const moduleSchema = require(`./modules/${moduleName}/schema.js`)
+        Schemas.push(moduleSchema)
+        }catch(e){}
+    });
+
+    const mergedSchemas = mergeSchemas({
+        schemas: Schemas
+    })
+
     app.all('/api', graphqlMiddleware.graphqlHTTP({
-        schema: schema,
-        rootValue: root,
+        schema: mergedSchemas,
         graphiql: true
     })
     )
 
-
-    /*MODULES.forEach((moduleName) => {
-        const appModule = require(`./modules/${moduleName}`);
-
-        if (typeof appModule.configure === 'function') {
-            appModule.configure(app);
-        }
-    });*/
 
     mongoose.Promise = global.Promise;
     return mongoose.connect(keys.MONGODB_URI, {
         useNewUrlParser : true,
         useUnifiedTopology: true
     }).then(() => app);
+
+   
+    
 }
