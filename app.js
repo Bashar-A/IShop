@@ -2,10 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const graphqlMiddleware = require('express-graphql')
 const keys = require('./keys')
-const { mergeSchemas } = require('@graphql-tools/merge');
+const { mergeSchemas, mergeResolvers } = require('@graphql-tools/merge');
 let Schemas = []
+let Resolvers = []
 
-const MODULES = ['attributes', 'categories'];
+const MODULES = ['users','attributes'];
 
 module.exports = function createApp(){
     const app = express();
@@ -20,17 +21,22 @@ module.exports = function createApp(){
 
     MODULES.forEach((moduleName) => {
         try{
-        const moduleSchema = require(`./modules/${moduleName}/schema.js`)
-        Schemas.push(moduleSchema)
+            const moduleSchema = require(`./modules/${moduleName}/schema.graphql`)
+            Schemas.push(moduleSchema)
+            const moduleResolver = require(`./modules/${moduleName}/resolvers`)
+            Resolvers.push(moduleResolver)
         }catch(e){}
     });
 
-    const mergedSchemas = mergeSchemas({
-        schemas: Schemas
-    })
+
+    const mergedSchemas = mergeSchemas({schemas: Schemas})
+    const mergedResolvers = mergeResolvers(Resolvers)
+
+    
 
     app.all('/api', graphqlMiddleware.graphqlHTTP({
         schema: mergedSchemas,
+        rootValue: mergedResolvers,
         graphiql: true
     })
     )

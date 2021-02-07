@@ -1,0 +1,19 @@
+const { buildSchema } = require('graphql')
+module.exports = buildSchema (`
+
+    type Query {
+        Attributes: [Attribute]
+    }
+
+    type Mutation{
+        addAttribute(name: String!, description: String!): Attribute
+        updateAttribute(id: ID!, name: String!, description: String!): Attribute
+        deleteAttribute(id: ID!): Int
+    }
+
+    type Attribute {
+        id: ID!
+        name: String!
+        description: String!
+    }
+`)

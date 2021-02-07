@@ -1,0 +1,31 @@
+const { buildSchema } = require('graphql')
+module.exports = buildSchema (`
+
+    type Query {
+        User(id: ID!): User!,
+        Users: [User]
+    }
+
+    type Mutation {
+        signup(user: UserInput!): AuthPayload
+        login(user: UserInput!): AuthPayload
+        deleteUser(id: ID!): Int
+    }
+
+    type AuthPayload {
+        token: String
+        user: User
+    }
+    
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+    }
+
+    type UserInput {
+        password: String!
+        email: String!
+        name: String
+    }
+`)
