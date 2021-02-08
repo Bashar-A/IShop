@@ -6,12 +6,23 @@ module.exports = buildSchema (`
     }
 
     type Mutation{
-        addAttribute(name: String!, description: String!): Attribute
-        updateAttribute(id: ID!, name: String!, description: String!): Attribute
-        deleteAttribute(id: ID!): Int
+        addAttribute(attribute: CreateAttributeInput): Attribute
+        updateAttribute(attribute: UpdateAttributeInput): Attribute
+        deleteAttribute(id: ID!): Boolean!
     }
 
     type Attribute {
+        id: ID!
+        name: String!
+        description: String!
+    }
+
+    input CreateAttributeInput {
+        name: String!
+        description: String!
+    }
+
+    input UpdateAttributeInput {
         id: ID!
         name: String!
         description: String!

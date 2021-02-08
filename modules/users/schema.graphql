@@ -23,7 +23,7 @@ module.exports = buildSchema (`
         email: String!
     }
 
-    type UserInput {
+    input UserInput {
         password: String!
         email: String!
         name: String
