@@ -8,8 +8,8 @@ module.exports = buildSchema (`
 
     type Mutation {
         signup(user: UserInput!): AuthPayload
-        login(user: UserInput!): AuthPayload
-        deleteUser(id: ID!): Int
+        login(user: AuthenticationInput!): AuthPayload
+        deleteUser(id: ID!): Boolean
     }
 
     type AuthPayload {
@@ -23,9 +23,14 @@ module.exports = buildSchema (`
         email: String!
     }
 
-    input UserInput {
-        password: String!
+    input AuthenticationInput {
         email: String!
+        password: String!
+    }
+
+    input UserInput {
+        email: String!
+        password: String!
         name: String
     }
 `)

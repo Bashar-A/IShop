@@ -47,8 +47,18 @@ async function signup(parent, args, context, info) {
       user,
     }
   }
+
+  async function deleteUser(parent, args, context, info) {
+    const id = context.variableValues.id
+    console.debug(context.variableValues)
+    const user = await User.findById(id)
+    if(!user)return false;
+    await user.remove()
+    return true
+}
   
   module.exports = {
     signup,
-    login
+    login,
+    deleteUser
   }

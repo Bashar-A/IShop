@@ -6,7 +6,7 @@ const { mergeSchemas, mergeResolvers } = require('@graphql-tools/merge');
 let Schemas = []
 let Resolvers = []
 
-const MODULES = ['users','attributes'];
+const MODULES = ['users','attributes', 'categories', 'customers', 'products'];
 
 module.exports = function createApp(){
     const app = express();

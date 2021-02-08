@@ -1,0 +1,47 @@
+const { buildSchema } = require('graphql')
+module.exports = buildSchema (`
+
+    type Query {
+        Products: [Product]
+    }
+
+    type Mutation{
+        addProduct(product: CreateProductInput): Product
+        updateProduct(product: UpdateProductInput): Product
+        deleteProduct(id: ID!): Boolean!
+    }
+
+    type Product {
+        id: ID!
+        name: String
+        priceExVat: Float
+        promoPrice: Float
+        category: String
+        attributes:[ProductAttribute]
+        stock: Float
+        onSale: Boolean
+        onPromo: Boolean
+    }
+
+    type ProductAttribute{
+        attribute: String
+        value: String
+    }
+
+    input CreateProductInput {
+        firstname: String!
+        secondname: String
+        lastname: String!
+        email: String
+        phone: String!
+    }
+
+    input UpdateProductInput {
+        id: ID!
+        firstname: String
+        secondname: String
+        lastname: String
+        email: String
+        phone: String
+    }
+`)
