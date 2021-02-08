@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const graphqlMiddleware = require('express-graphql')
 const keys = require('./keys')
-const { mergeSchemas, mergeResolvers } = require('@graphql-tools/merge');
-let Schemas = []
+const { mergeResolvers, mergeTypeDefs } = require('@graphql-tools/merge');
+const { buildSchemaFromTypeDefinitions } = require('graphql-tools');
+let TypeDefs = []
 let Resolvers = []
 
 const MODULES = ['users','attributes', 'categories', 'customers', 'products'];
@@ -21,25 +22,28 @@ module.exports = function createApp(){
 
     MODULES.forEach((moduleName) => {
         try{
-            const moduleSchema = require(`./modules/${moduleName}/schema.graphql`)
-            Schemas.push(moduleSchema)
+            const moduleTypeDef = require(`./modules/${moduleName}/schema.graphql`)
+            TypeDefs.push(moduleTypeDef)
             const moduleResolver = require(`./modules/${moduleName}/resolvers`)
             Resolvers.push(moduleResolver)
         }catch(e){}
     });
 
 
-    const mergedSchemas = mergeSchemas({schemas: Schemas})
+    const mergedTypeDefs = mergeTypeDefs(TypeDefs)
     const mergedResolvers = mergeResolvers(Resolvers)
 
-    
+    const Schema = buildSchemaFromTypeDefinitions(mergedTypeDefs)
 
-    app.all('/api', graphqlMiddleware.graphqlHTTP({
-        schema: mergedSchemas,
-        rootValue: mergedResolvers,
-        graphiql: true
-    })
-    )
+
+    app.use('/api', (req, res) => {
+        return graphqlMiddleware.graphqlHTTP({
+            schema: Schema,
+            rootValue: mergedResolvers,
+            graphiql: true,
+            context: req
+        })(req, res);
+    });
 
 
     mongoose.Promise = global.Promise;

@@ -1,5 +1,5 @@
 const { buildSchema } = require('graphql')
-module.exports = buildSchema (`
+module.exports = `
 
     type Query {
         Attributes: [Attribute]
@@ -27,4 +27,4 @@ module.exports = buildSchema (`
         name: String!
         description: String!
     }
-`)
+`

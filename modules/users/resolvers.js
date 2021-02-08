@@ -13,26 +13,26 @@ async function signup(parent, args, context, info) {
   const user = await User.create({...arguments, password, salt})
 
   const token = jwt.sign({ userId: user.id },keys.JWT_SIGNATURE)
+
+  context.res.cookie('token', token, { httpOnly: true })
     
   user.save()
     
-  return {
-      token,
-      user,
-  }
+  return user
 }
   
   async function login(parent, args, context, info) {
     const arguments = context.variableValues.user
+    console.debug(context)
+    console.debug(context.req)
+    console.debug(context.res)
+    console.debug(info)
 
     const user = await User.findOne({email: arguments.email})
     if (!user) {
       throw new Error('No such user found')
     }
 
-    
-    console.debug(user)
-    console.debug(arguments)
     const hash = await bcrypt.hash(arguments.password, user.salt);
 
     const valid = hash === user.password
@@ -41,11 +41,9 @@ async function signup(parent, args, context, info) {
     }
   
     const token = jwt.sign({ userId: user.id }, keys.JWT_SIGNATURE)
-  
-    return {
-      token,
-      user,
-    }
+
+    context.res.cookie('token', token, { httpOnly: true })
+    return user
   }
 
   async function deleteUser(parent, args, context, info) {

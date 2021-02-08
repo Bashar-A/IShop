@@ -1,5 +1,5 @@
 const { buildSchema } = require('graphql')
-module.exports = buildSchema (`
+module.exports = `
 
     type Query {
         User(id: ID!): User!,
@@ -33,4 +33,4 @@ module.exports = buildSchema (`
         password: String!
         name: String
     }
-`)
+`

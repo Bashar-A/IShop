@@ -1,37 +1,37 @@
-const Customer = require('./model');
+const Product = require('./model');
 
-async function Customers(parent, args, context, info) {
-    return await Customer.find({})
+async function Products(parent, args, context, info) {
+    return await Product.find({})
 }
 
-async function addCustomer(parent, args, context, info) {
-    const input = context.variableValues.createCustomerInput
-    const customer = await Customer.create(input)
-    await customer.save()
-    return customer
+async function addProduct(parent, args, context, info) {
+    const input = context.variableValues.createProductInput
+    const product = await Product.create(input)
+    await product.save()
+    return product
 }
 
-async function updateCustomer(parent, args, context, info) {
-    const input = context.variableValues.updateCustomerInput
-    const customer = await Customer.findById(input.id)
-    customer.set(input)
-    await customer.save()
-    return customer
+async function updateProduct(parent, args, context, info) {
+    const input = context.variableValues.updateProductInput
+    const product = await Product.findById(input.id)
+    product.set(input)
+    await product.save()
+    return product
 }
 
-async function deleteCustomer(parent, args, context, info) {
+async function deleteProduct(parent, args, context, info) {
     const id = context.variableValues.id
     console.debug(context.variableValues)
-    const customer = await Customer.findById(id)
-    if(!customer)return false;
-    await customer.remove()
+    const product = await Product.findById(id)
+    if(!product)return false;
+    await product.remove()
     return true
 }
 
 
 module.exports = {
-    Customers,
-    addCustomer,
-    updateCustomer,
-    deleteCustomer
+    Products,
+    addProduct,
+    updateProduct,
+    deleteProduct
   }

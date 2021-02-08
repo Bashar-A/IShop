@@ -21,7 +21,6 @@ async function updateAttribute(parent, args, context, info) {
 
 async function deleteAttribute(parent, args, context, info) {
     const id = context.variableValues.id
-    console.debug(context.variableValues)
     const attribute = await Attribute.findById(id)
     if(!attribute)return false;
     await attribute.remove()

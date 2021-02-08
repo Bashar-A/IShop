@@ -1,5 +1,5 @@
 const { buildSchema } = require('graphql')
-module.exports = buildSchema (`
+module.exports = `
 
     type Query {
         Products: [Product]
@@ -16,7 +16,7 @@ module.exports = buildSchema (`
         name: String
         priceExVat: Float
         promoPrice: Float
-        category: String
+        category: Category
         attributes:[ProductAttribute]
         stock: Float
         onSale: Boolean
@@ -24,24 +24,35 @@ module.exports = buildSchema (`
     }
 
     type ProductAttribute{
-        attribute: String
+        attribute: Attribute
+        value: String
+    }
+
+    input ProductAttributeInput{
+        attribute: ID
         value: String
     }
 
     input CreateProductInput {
-        firstname: String!
-        secondname: String
-        lastname: String!
-        email: String
-        phone: String!
+        name: String!
+        priceExVat: Float
+        promoPrice: Float
+        category: ID
+        attributes:[ProductAttributeInput]
+        stock: Int
+        onSale: Boolean
+        onPromo: Boolean
     }
 
     input UpdateProductInput {
         id: ID!
-        firstname: String
-        secondname: String
-        lastname: String
-        email: String
-        phone: String
+        name: String
+        priceExVat: Float
+        promoPrice: Float
+        category: ID
+        attributes:[ProductAttributeInput]
+        stock: Float
+        onSale: Boolean
+        onPromo: Boolean
     }
-`)
+`
