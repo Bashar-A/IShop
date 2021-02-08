@@ -5,14 +5,14 @@ async function Attributes(parent, args, context, info) {
 }
 
 async function addAttribute(parent, args, context, info) {
-    const input = context.variableValues.input
+    const input = context.variableValues.createAttributeInput
     const attribute = await Attribute.create(input)
     await attribute.save()
     return attribute
 }
 
 async function updateAttribute(parent, args, context, info) {
-    const input = context.variableValues.input
+    const input = context.variableValues.updateAttributeInput
     const attribute = await Attribute.findById(input.id)
     attribute.set(input)
     await attribute.save()
@@ -21,9 +21,11 @@ async function updateAttribute(parent, args, context, info) {
 
 async function deleteAttribute(parent, args, context, info) {
     const id = context.variableValues.id
+    console.debug(context.variableValues)
     const attribute = await Attribute.findById(id)
+    if(!attribute)return false;
     await attribute.remove()
-    return attribute
+    return true
 }
 
 

@@ -4,7 +4,7 @@ const Category = new Schema({
     name: String,
     description: String,
     image: String,
-    parent:{type: Schema.Types.ObjectId}
+    parent:{type: Schema.Types.ObjectId, default: 0}
 },{
     timestamps: true
 })
