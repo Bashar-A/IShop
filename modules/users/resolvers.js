@@ -5,7 +5,7 @@ const keys = require('../../keys')
 
 
 async function signup(parent, args, context, info) {
-  const arguments = context.variableValues.user
+  const arguments = args.variables.user
 
   const salt = await bcrypt.genSalt(10)
   const password = await bcrypt.hash(arguments.password, salt)
@@ -18,15 +18,14 @@ async function signup(parent, args, context, info) {
     
   user.save()
     
-  return user
+  return {user}
 }
   
   async function login(parent, args, context, info) {
-    const arguments = context.variableValues.user
-    console.debug(context)
-    console.debug(context.req)
-    console.debug(context.res)
-    console.debug(info)
+    const arguments = args.variables.user
+    //console.debug(args.cookies)
+    //console.debug(args.req)
+    //console.debug(args.res)
 
     const user = await User.findOne({email: arguments.email})
     if (!user) {
@@ -42,13 +41,12 @@ async function signup(parent, args, context, info) {
   
     const token = jwt.sign({ userId: user.id }, keys.JWT_SIGNATURE)
 
-    context.res.cookie('token', token, { httpOnly: true })
-    return user
+    args.res.cookie('token', token, { httpOnly: true })
+    return {user}
   }
 
   async function deleteUser(parent, args, context, info) {
-    const id = context.variableValues.id
-    console.debug(context.variableValues)
+    const id = args.variables.id
     const user = await User.findById(id)
     if(!user)return false;
     await user.remove()

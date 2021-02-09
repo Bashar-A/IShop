@@ -1,18 +1,34 @@
 const Product = require('./model');
 
 async function Products(parent, args, context, info) {
-    return await Product.find({})
+    const {
+        skip = null,
+        limit = null,
+        filter = null
+    } = args.body.variables?.options || {}
+
+    const items = await Product.find(
+        {},
+        null,
+        {skip,limit}
+        )
+    const totalItems = Object.keys(items).length
+
+    return {
+        items,
+        totalItems
+    }
 }
 
 async function addProduct(parent, args, context, info) {
-    const input = context.variableValues.createProductInput
+    const input = args.body.variables.createProductInput
     const product = await Product.create(input)
     await product.save()
     return product
 }
 
 async function updateProduct(parent, args, context, info) {
-    const input = context.variableValues.updateProductInput
+    const input = args.body.variables.updateProductInput
     const product = await Product.findById(input.id)
     product.set(input)
     await product.save()
@@ -20,8 +36,7 @@ async function updateProduct(parent, args, context, info) {
 }
 
 async function deleteProduct(parent, args, context, info) {
-    const id = context.variableValues.id
-    console.debug(context.variableValues)
+    const id = args.body.variables.id
     const product = await Product.findById(id)
     if(!product)return false;
     await product.remove()
@@ -34,4 +49,4 @@ module.exports = {
     addProduct,
     updateProduct,
     deleteProduct
-  }
+}

@@ -1,8 +1,7 @@
-const { buildSchema } = require('graphql')
 module.exports = `
 
     type Query {
-        Products: [Product]
+        Products(options: ProductListOptions): ProductList
     }
 
     type Mutation{
@@ -20,12 +19,28 @@ module.exports = `
         attributes:[ProductAttribute]
         stock: Float
         onSale: Boolean
-        onPromo: Boolean
     }
 
     type ProductAttribute{
         attribute: Attribute
         value: String
+    }
+
+    type ProductList {
+        items: [Product]
+        totalItems: Int
+    }
+
+    input ProductListOptions{
+        skip: Int
+        limit: Int
+        filter: ProductFilterParameter
+    }
+
+    input ProductFilterParameter {
+        createdAt: DateOperators
+        updatedAt: DateOperators
+        name: StringOperators
     }
 
     input ProductAttributeInput{

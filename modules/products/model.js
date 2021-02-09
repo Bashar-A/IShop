@@ -13,8 +13,7 @@ const Product = new Schema({
     ],
     imagesURL:[String],
     stock: Number,
-    onSale: Boolean,
-    onPromo: Boolean
+    onSale: Boolean
 },{
     timestamps: true
 })

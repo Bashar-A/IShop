@@ -1,8 +1,6 @@
-const { buildSchema } = require('graphql')
 module.exports = `
-
     type Query {
-        Attributes: [Attribute]
+        Attributes(options: AttributeListOptions): AttributeList
     }
 
     type Mutation{
@@ -15,6 +13,16 @@ module.exports = `
         id: ID!
         name: String!
         description: String!
+    }
+
+    type AttributeList {
+        attributes: [Attribute]
+        totalAttributes: Int
+    }
+    
+    input AttributeListOptions{
+        skip: Int
+        limit: Int
     }
 
     input CreateAttributeInput {

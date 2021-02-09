@@ -1,0 +1,29 @@
+module.exports = `
+    scalar DateTime
+
+    enum SortOrder {
+        ASC
+        DESC
+    }
+
+    input DateOperators {
+        eq: DateTime
+        before: DateTime
+        after: DateTime
+        between: DateRange
+    }
+
+    input DateRange {
+        start: DateTime!
+        end: DateTime!
+    }
+    input StringOperators {
+        eq: String
+        notEq: String
+        contains: String
+        notContains: String
+        in: [String!]
+        notIn: [String!]
+        regex: String
+    }
+`
