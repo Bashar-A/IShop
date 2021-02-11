@@ -8,8 +8,7 @@ const cookieParser = require("cookie-parser");
 
 let TypeDefs = [];
 let Resolvers = [];
-//const MODULES = ["users", "attributes", "categories", "customers", "products", "utils"];
-const MODULES = ["products", "users", "attributes", "categories", "utils"];
+const MODULES = ["users", "attributes", "categories", "customers", "products", "reviews", "utils"];
 
 module.exports = function createApp() {
   const app = express();

@@ -8,22 +8,17 @@ module.exports = `
 
     input DateOperators {
         eq: DateTime
-        before: DateTime
-        after: DateTime
-        between: DateRange
+        lt: DateTime
+        lte: DateTime
+        gt: DateTime
+        gte: DateTime
     }
 
-    input DateRange {
-        start: DateTime!
-        end: DateTime!
-    }
     input StringOperators {
         eq: String
-        notEq: String
-        contains: String
-        notContains: String
-        in: [String!]
-        notIn: [String!]
+        ne: String
         regex: String
+        in: [String!]
+        nin: [String!]
     }
 `

@@ -5,7 +5,7 @@ module.exports = `
     }
 
     type Mutation{
-        addProduct(product: CreateProductInput): Product
+        addProduct(product: ProductInput): Product
         updateProduct(product: UpdateProductInput): Product
         deleteProduct(id: ID!): Boolean!
     }
@@ -16,15 +16,11 @@ module.exports = `
         priceExVat: Float
         promoPrice: Float
         category: Category
-        attributes:[ProductAttribute]
+        attributes:[Attribute]
         stock: Float
         onSale: Boolean
     }
 
-    type ProductAttribute{
-        attribute: Attribute
-        value: String
-    }
 
     type ProductList {
         items: [Product]
@@ -43,20 +39,14 @@ module.exports = `
         name: StringOperators
     }
 
-    input ProductAttributeInput{
-        attribute: ID
-        value: String
-    }
-
-    input CreateProductInput {
+    input ProductInput {
         name: String!
         priceExVat: Float
         promoPrice: Float
         category: ID
-        attributes:[ProductAttributeInput]
+        attributes:[AttributeInput]
         stock: Int
         onSale: Boolean
-        onPromo: Boolean
     }
 
     input UpdateProductInput {
@@ -65,9 +55,8 @@ module.exports = `
         priceExVat: Float
         promoPrice: Float
         category: ID
-        attributes:[ProductAttributeInput]
+        attributes:[AttributeInput]
         stock: Float
         onSale: Boolean
-        onPromo: Boolean
     }
 `

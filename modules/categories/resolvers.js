@@ -5,14 +5,14 @@ async function Categories(parent, args, context, info) {
 }
 
 async function addCategory(parent, args, context, info) {
-    const input = context.variableValues.createCategoryInput
+    const input = args.body.variables.createCategoryInput
     const category = await Category.create(input)
     await category.save()
     return category
 }
 
 async function updateCategory(parent, args, context, info) {
-    const input = context.variableValues.updateCategoryInput
+    const input = args.body.variables.updateCategoryInput
     const category = await Category.findById(input.id)
     category.set(input)
     await category.save()
@@ -20,8 +20,7 @@ async function updateCategory(parent, args, context, info) {
 }
 
 async function deleteCategory(parent, args, context, info) {
-    const id = context.variableValues.id
-    console.debug(context.variableValues)
+    const id = args.body.variables.id
     const category = await Category.findById(id)
     if(!category)return false;
     await category.remove()

@@ -2,15 +2,41 @@ const Attribute = require('./model');
 
 async function Attributes(parent, args, context, info) {
     const {
+        filter = null,
         skip = null,
         limit = null
     } = args.body.variables?.options || {}
 
+    const {
+        name = null,
+        createdAt = null,
+        updatedAt = null
+    } = filter
+
+
+    Object.keys(name).forEach(key => {
+        name[`$${key}`] = name[key]
+        delete name[key]
+    })
+    // Object.keys(createdAt).forEach(key => {
+    //     createdAt[`$${key}`] = createdAt[key]
+    //     delete createdAt[key]
+    // })
+    // Object.keys(updatedAt).forEach(key => {
+    //     updatedAt[`$${key}`] = updatedAt[key]
+    //     delete updatedAt[key]
+    // })
+
     const attributes = await Attribute.find(
-        {},
+        {
+            name: {...name},
+            //createdAt: {...createdAt},
+            //updatedAt: {...updatedAt}
+        },
         null,
         {skip,limit}
         )
+
     const totalAttributes = Object.keys(attributes).length
 
     return {
@@ -20,7 +46,6 @@ async function Attributes(parent, args, context, info) {
 }
 
 async function addAttribute(parent, args, context, info) {
-    console.debug(args.body.variables)
     const input = args.body.variables.createAttributeInput
     const attribute = await Attribute.create(input)
     await attribute.save()

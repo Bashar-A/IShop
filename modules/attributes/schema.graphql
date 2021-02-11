@@ -4,7 +4,7 @@ module.exports = `
     }
 
     type Mutation{
-        addAttribute(attribute: CreateAttributeInput): Attribute
+        addAttribute(attribute: AttributeInput): Attribute
         updateAttribute(attribute: UpdateAttributeInput): Attribute
         deleteAttribute(id: ID!): Boolean!
     }
@@ -13,6 +13,7 @@ module.exports = `
         id: ID!
         name: String!
         description: String!
+        values: [String]
     }
 
     type AttributeList {
@@ -23,16 +24,25 @@ module.exports = `
     input AttributeListOptions{
         skip: Int
         limit: Int
+        filter: AttributeFilterParameter
     }
 
-    input CreateAttributeInput {
+    input AttributeFilterParameter {
+        createdAt: DateOperators
+        updatedAt: DateOperators
+        name: StringOperators
+    }
+
+    input AttributeInput {
         name: String!
-        description: String!
+        description: String
+        values: [String]
     }
 
     input UpdateAttributeInput {
         id: ID!
         name: String!
         description: String!
+        values: [String]
     }
 `

@@ -1,0 +1,50 @@
+module.exports = `
+
+    type Query {
+        Reviews(options: ReviewListOptions): ReviewList
+    }
+
+    type Mutation{
+        addReview(review: ReviewInput): Review
+        updateReview(review: UpdateReviewInput): Review
+        deleteReview(id: ID!): Boolean!
+    }
+
+    type Review {
+        id: ID!
+        product: Product
+        name: String
+        description: String
+    }
+
+
+    type ReviewList {
+        items: [Review]
+        totalItems: Int
+    }
+
+    input ReviewListOptions{
+        skip: Int
+        limit: Int
+        filter: ReviewFilterParameter
+    }
+
+    input ReviewFilterParameter {
+        createdAt: DateOperators
+        updatedAt: DateOperators
+        name: StringOperators
+    }
+
+    input ReviewInput {
+        product: ProductInput
+        name: String
+        description: String
+    }
+
+    input UpdateReviewInput {
+        id: ID!
+        product: ProductInput
+        name: String
+        description: String
+    }
+`

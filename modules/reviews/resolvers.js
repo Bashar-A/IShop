@@ -1,6 +1,6 @@
-const Product = require('./model');
+const Review = require('./model');
 
-async function Products(parent, args, context, info) {
+async function Reviews(parent, args, context, info) {
     const {
         filter = null,
         skip = null,
@@ -27,7 +27,7 @@ async function Products(parent, args, context, info) {
         delete updatedAt[key]
     })
 
-    const items = await Product.find(
+    const items = await Review.find(
         {
             name: {...name},
             createdAt: {...createdAt},
@@ -44,33 +44,33 @@ async function Products(parent, args, context, info) {
     }
 }
 
-async function addProduct(parent, args, context, info) {
-    const input = args.body.variables.createProductInput
-    const product = await Product.create(input)
-    await product.save()
-    return product
+async function addReview(parent, args, context, info) {
+    const input = args.body.variables.createreviewInput
+    const review = await Review.create(input)
+    await review.save()
+    return review
 }
 
-async function updateProduct(parent, args, context, info) {
-    const input = args.body.variables.updateProductInput
-    const product = await Product.findById(input.id)
-    product.set(input)
-    await product.save()
-    return product
+async function updateReview(parent, args, context, info) {
+    const input = args.body.variables.updatereviewInput
+    const review = await Review.findById(input.id)
+    review.set(input)
+    await review.save()
+    return review
 }
 
-async function deleteProduct(parent, args, context, info) {
+async function deleteReview(parent, args, context, info) {
     const id = args.body.variables.id
-    const product = await Product.findById(id)
-    if(!product)return false;
-    await product.remove()
+    const review = await Review.findById(id)
+    if(!review)return false;
+    await review.remove()
     return true
 }
 
 
 module.exports = {
-    Products,
-    addProduct,
-    updateProduct,
-    deleteProduct
+    Reviews,
+    addReview,
+    updateReview,
+    deleteReview
 }

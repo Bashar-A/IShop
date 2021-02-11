@@ -5,14 +5,14 @@ async function Customers(parent, args, context, info) {
 }
 
 async function addCustomer(parent, args, context, info) {
-    const input = context.variableValues.createCustomerInput
+    const input = args.body.variables.createCustomerInput
     const customer = await Customer.create(input)
     await customer.save()
     return customer
 }
 
 async function updateCustomer(parent, args, context, info) {
-    const input = context.variableValues.updateCustomerInput
+    const input = args.body.variables.updateCustomerInput
     const customer = await Customer.findById(input.id)
     customer.set(input)
     await customer.save()
@@ -20,8 +20,7 @@ async function updateCustomer(parent, args, context, info) {
 }
 
 async function deleteCustomer(parent, args, context, info) {
-    const id = context.variableValues.id
-    console.debug(context.variableValues)
+    const id = args.body.variables.id
     const customer = await Customer.findById(id)
     if(!customer)return false;
     await customer.remove()
