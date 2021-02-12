@@ -1,9 +1,20 @@
 module.exports = `
     scalar DateTime
+    scalar Upload
+
+    type Mutation {
+      uploadImage(name: String!, file: Upload!): Boolean
+    }
 
     enum SortOrder {
         ASC
         DESC
+    }
+
+    type Image {
+      id: ID
+      name: String
+      url: String
     }
 
     input DateOperators {

@@ -1,0 +1,73 @@
+module.exports = `
+    type Query {
+        Orders(options: OrderListOptions): OrderList
+    }
+
+    type Mutation{
+        addOrder(order: OrderInput): Order
+        updateOrder(order: UpdateOrderInput): Order
+        deleteOrder(id: ID!): Boolean!
+    }
+
+    type Order {
+        id: ID!
+        customer: Customer
+        paymentType: String
+        status: OrderStatus
+        address: String
+        comments: String
+        orderItems: [OrderItem]
+    }
+
+    enum OrderStatus{
+        WaitingForApprovel,
+        Paid,
+        Closed
+    }
+
+    type OrderItem{
+        product: ID
+        quantity: Int
+    }
+
+    type OrderList {
+        orders: [Order]
+        totalOrders: Int
+    }
+    
+    input OrderListOptions{
+        skip: Int
+        limit: Int
+        filter: OrderFilterParameter
+    }
+
+    input OrderFilterParameter {
+        createdAt: DateOperators
+        updatedAt: DateOperators
+        name: StringOperators
+    }
+
+    input OrderItemInput{
+        product: ID
+        quantity: Int
+    }
+
+    input OrderInput {
+        customer: ID
+        paymentType: String
+        status: OrderStatus
+        address: String
+        comments: String
+        orderItems: [OrderItemInput]
+    }
+
+    input UpdateOrderInput {
+        id: ID!
+        customer: ID
+        paymentType: String
+        status: OrderStatus
+        address: String
+        comments: String
+        orderItems: [OrderItemInput]
+    }
+`

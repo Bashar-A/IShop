@@ -5,10 +5,11 @@ const keys = require("./keys");
 const { mergeResolvers, mergeTypeDefs } = require("@graphql-tools/merge");
 const { buildSchemaFromTypeDefinitions } = require("graphql-tools");
 const cookieParser = require("cookie-parser");
+const { graphqlUploadExpress } = require("graphql-upload");
 
 let TypeDefs = [];
 let Resolvers = [];
-const MODULES = ["users", "attributes", "categories", "customers", "products", "reviews", "utils"];
+const MODULES = ["users", "attributes", "categories", "customers", "products", "reviews", "utils", "orders"];
 
 module.exports = function createApp() {
   const app = express();
@@ -44,6 +45,7 @@ module.exports = function createApp() {
 
   app.use(
     "/api",
+    graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
     graphqlMiddleware.graphqlHTTP({
       schema: Schema,
       rootValue: mergedResolvers,

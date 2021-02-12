@@ -7,32 +7,16 @@ async function Reviews(parent, args, context, info) {
         limit = null
     } = args.body.variables?.options || {}
 
-    const {
-        name = null,
-        createdAt = null,
-        updatedAt = null
-    } = filter
-
-
-    Object.keys(name).forEach(key => {
-        name[`$${key}`] = name[key]
-        delete name[key]
-    })
-    Object.keys(createdAt).forEach(key => {
-        createdAt[`$${key}`] = createdAt[key]
-        delete createdAt[key]
-    })
-    Object.keys(updatedAt).forEach(key => {
-        updatedAt[`$${key}`] = updatedAt[key]
-        delete updatedAt[key]
-    })
+    if(filter)
+        Object.keys(filter).forEach(filterKey => {
+            Object.keys(filter[filterKey]).forEach(key => {
+                filter[filterKey][`$${key}`] = filter[filterKey][key]
+                delete filter[filterKey][key]
+            })
+        })
 
     const items = await Review.find(
-        {
-            name: {...name},
-            createdAt: {...createdAt},
-            updatedAt: {...updatedAt}
-        },
+        filter,
         null,
         {skip,limit}
         )

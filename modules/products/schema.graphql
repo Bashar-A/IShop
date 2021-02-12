@@ -17,10 +17,10 @@ module.exports = `
         promoPrice: Float
         category: Category
         attributes:[Attribute]
+        images:[String]
         stock: Float
         onSale: Boolean
     }
-
 
     type ProductList {
         items: [Product]

@@ -6,7 +6,7 @@ module.exports = `
     }
 
     type Mutation{
-        addCustomer(customer: CreateCustomerInput): Customer
+        addCustomer(customer: CustomerInput): Customer
         updateCustomer(customer: UpdateCustomerInput): Customer
         deleteCustomer(id: ID!): Boolean!
     }
@@ -20,7 +20,7 @@ module.exports = `
         phone: String!
     }
 
-    input CreateCustomerInput {
+    input CustomerInput {
         firstname: String!
         secondname: String
         lastname: String!

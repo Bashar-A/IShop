@@ -11,7 +11,7 @@ const Product = new Schema({
             value: String
         }
     ],
-    imagesURL:[String],
+    images:[String],
     stock: Number,
     onSale: Boolean
 },{
